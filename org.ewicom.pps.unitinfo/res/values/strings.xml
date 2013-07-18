@@ -2,7 +2,36 @@
 <resources>
 
     <string name="app_name">PPS UnitInfo</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_label">PPS UnitInfo</string>
+    <string name="menu_settings">Ustawienia</string>
+    <string name="title_activity_unitlist">Lista jednostek</string>
+    <string name="title_activity_unitdetails">Dane szczegółowe</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="err_apprequiresnetwork">Aplikacja wymaga polaczenia internetowego do inicjalizacji</string>
+    <string name="info_appcheckupdate">Sprawdzam aktualizacje</string>
+    <string name="info_appdownloaddatabasefile">Pobieranie pliku bazy danych</string>
+    <string name="info_copydatabasefile">Kopiowanie pliku bazy danych</string>
+    <string name="empty_geodata">Brak danych geolokalizacyjnych</string>
+    <string name="no_app_email">Brak aplikacji do obsługi poczty elektronicznej</string>
+    <string name="no_map_app">Brak aplikacji do obsługi map</string>
+    <string name="no_www_app">Brak aplikacji do obsługi stron www</string>
+    <string name="menu_about">O programie</string>
+    <string name="unitslist_hint">Wyszukaj jednostkę</string>
+    <string name="dialog_about_info">Aplikacja prezentuje w przystępny sposób dane teleadresowe polskich jednostek penitencjarnych.\nDane aktualizowane są na podstawie informacji zamieszczonych na stronie http://sw.gov.pl.</string>
+    <string name="copying">Copyright &#169; 2012 Marcin Kunicki\nmasel.popowo@gmail.com</string>
+    <string name="dialog_changelog_title">Aktualizacja</string>
+    <string name="button_ok">OK</string>
+    <string name="button_download">Pobierz</string>
+    <string name="button_update">Aktualizuj</string>
+    <string name="button_cancel">Anuluj</string>
+    <string name="emptyDescription">Brak skróconego opisu jednostki</string>
+    <string name="fullDescriptionLink">Pełny opis</string>
+    <string name="addressTabTitle">Opis</string>
+    <string name="leadersTabTitle">Kierownictwo</string>
+    <string name="phonesTabTitle">Telefony</string>
+    <string name="openImageLink">Wyświetl zdjęcie</string>
+    <string name="openMapLink">Wskazówki dojazdu</string>
+    <string name="saveInContactLink">Zapisz w kontaktach</string>
+    <string name="err_nonetwork">Brak połączenia internetowego</string>
 
 </resources>

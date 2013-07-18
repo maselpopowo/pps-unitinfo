@@ -8,19 +8,38 @@
         android:minSdkVersion="10"
         android:targetSdkVersion="17" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:allowClearUserData="false"
+        android:icon="@drawable/ic_launcher_pps_addressbook"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Light.NoTitleBar" >
         <activity
-            android:name="org.ewicom.pps.unitinfo.MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
+            android:name=".SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:screenOrientation="portrait" >
+            <intent-filter android:label="@string/app_label" >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".UnitsList"
+            android:label="@string/title_activity_unitlist"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".UnitDetails"
+            android:label="@string/title_activity_unitdetails"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name=".MainActivity" >
         </activity>
     </application>
 

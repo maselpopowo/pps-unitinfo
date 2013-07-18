@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tab_title_background">#33b5e5</color>
+    <color name="tab_title_text_color">#fff</color>
+    
+    <color name="app_background">#F5F5F5</color>
+    <color name="link">#0027BB</color>
+    <color name="bottom_line">#A6A6A6</color>
+</resources>

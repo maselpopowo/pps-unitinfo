@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <EditText android:id="@+id/unitslist_searchbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/unitslist_hint"
+        android:maxLines="1"
+        android:drawableLeft="@drawable/ic_search"
+        android:layout_marginTop="2dip"
+        android:inputType="text"/>
+    
+    <ListView android:id="@android:id/list" 
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"/>
+</LinearLayout>

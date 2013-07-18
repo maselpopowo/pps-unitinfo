@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_background"
+        android:orientation="vertical" >
+
+        <!-- Panel z nazwa jednostki -->
+
+        <LinearLayout
+            android:id="@+id/panel_unitname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/panel_background"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/panel_left_padding"
+            android:paddingRight="@dimen/panel_right_padding" >
+
+            <TextView
+                android:id="@+id/text_unitname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/unitname_bottom_margin"
+                android:gravity="left"
+                android:textSize="@dimen/unitname_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_unitparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="right"
+                android:textSize="@dimen/unitparent_text_size" />
+
+            <View
+                android:id="@+id/line_unitname"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/line_top_margin"
+                android:background="@color/bottom_line" />
+
+            <TextView
+                android:id="@+id/link_openimg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:clickable="true"
+                android:drawableRight="@drawable/ic_content_picture"
+                android:gravity="center_vertical"
+                android:text="@string/openImageLink"
+                android:textColor="@color/link" />
+        </LinearLayout>
+
+        <!-- Panel ze zdjeciem -->
+
+        <LinearLayout
+            android:id="@+id/panel_unitimage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/panel_background"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/panel_left_padding"
+            android:paddingRight="@dimen/panel_right_padding"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/progerss_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/unitimage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop" />
+        </LinearLayout>
+
+        <!-- Panel z adresem jednostki -->
+
+        <RelativeLayout
+            android:id="@+id/panel_unitaddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/panel_background"
+            android:paddingLeft="@dimen/panel_left_padding"
+            android:paddingRight="@dimen/panel_right_padding" >
+
+            <TextView
+                android:id="@+id/text_unitstreet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/address_text_size" />
+
+            <TextView
+                android:id="@+id/text_unitcity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_unitstreet"
+                android:textSize="@dimen/address_text_size" />
+
+            <TextView
+                android:id="@+id/text_unitphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_unitcity"
+                android:singleLine="true"
+                android:textSize="@dimen/address_text_size" />
+
+            <TextView
+                android:id="@+id/text_unitemail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_unitphone"
+                android:singleLine="true"
+                android:textSize="@dimen/address_text_size" />
+
+            <View
+                android:id="@+id/line_unitaddress"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/text_unitemail"
+                android:layout_marginTop="@dimen/line_top_margin"
+                android:background="@color/bottom_line" />
+
+            <TextView
+                android:id="@+id/link_openmap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/line_unitaddress"
+                android:clickable="true"
+                android:drawableRight="@drawable/ic_location_web_site"
+                android:gravity="center_vertical"
+                android:text="@string/openMapLink"
+                android:textColor="@color/link" />
+        </RelativeLayout>
+
+        <!-- Panel z opisem jednostki -->
+
+        <LinearLayout
+            android:id="@+id/panel_unitdescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/panel_background"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/panel_left_padding"
+            android:paddingRight="@dimen/panel_right_padding" >
+
+            <TextView
+                android:id="@+id/text_unitdescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/line_unitdescription"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/line_top_margin"
+                android:background="@color/bottom_line" />
+
+            <TextView
+                android:id="@+id/link_opendescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:clickable="true"
+                android:drawableRight="@drawable/ic_action_about"
+                android:gravity="center_vertical"
+                android:text="@string/fullDescriptionLink"
+                android:textColor="@color/link" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

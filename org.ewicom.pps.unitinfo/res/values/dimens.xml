@@ -3,5 +3,21 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    
+    <dimen name="tab_title_padding_bottom">4dp</dimen>
+    <dimen name="tab_title_padding_top">4dp</dimen>
+    
+    <dimen name="panel_left_padding">25dp</dimen>
+    <dimen name="panel_right_padding">20dp</dimen>
+    
+    <dimen name="unitname_bottom_margin">18dp</dimen>
+    <dimen name="line_top_margin">10dp</dimen>
+    
+    <dimen name="unitname_text_size">18sp</dimen>
+    <dimen name="unitparent_text_size">16sp</dimen>
+    <dimen name="address_text_size">16sp</dimen>
+    
+    <!-- PODSTAWOWE -->
+    <dimen name="default_text_size">16sp</dimen>
 
 </resources>
