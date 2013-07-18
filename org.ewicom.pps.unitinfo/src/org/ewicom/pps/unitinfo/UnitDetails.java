@@ -1,29 +1,25 @@
 /**************************************************************************
- * Copyright (C) 2012 Marcin Kunicki <masel.popowo@gmail.com>
- * $LastChangedRevision: 94 $
- * $LastChangedBy: masel.popowo@gmail.com $
- * $LastChangedDate: 2012-12-20 10:36:39 +0100 (Cz, 20 gru 2012) $
- * $HeadURL: https://pps-addressbook.googlecode.com/svn/trunk/src/org/ewicom/ppsaddressbook/UnitDetails.java $
+ * Copyright (C) 2012 - 2013 Marcin Kunicki <masel.popowo@gmail.com>
  *
- * This file is part of PPS-AddressBook.
+ * This file is part of PPS-UnitInfo.
  *
- * PPS-AddressBook is free software; you can redistribute it and/or modify
+ * PPS-UnitInfo is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  * 
- * PPS-AddressBook is distributed in the hope that it will be useful,
+ * PPS-UnitInfo is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with PPS-AddressBook; if not, write to the Free Software
+ * along with PPS-UnitInfo; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
- * Ten plik jest częścią PPS-AddressBook.
+ * Ten plik jest częścią PPS-UnitInfo.
  * 
- * PPS-AddressBook jest wolnym oprogramowaniem; możesz go rozprowadzać dalej
+ * PPS-UnitInfo jest wolnym oprogramowaniem; możesz go rozprowadzać dalej
  * i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU,
  * wydanej przez Fundację Wolnego Oprogramowania - według wersji 2 tej
  * Licencji lub (według twojego wyboru) którejś z późniejszych wersji.
