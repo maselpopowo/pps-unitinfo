@@ -106,12 +106,18 @@
                 android:layout_below="@id/text_unitstreet"
                 android:textSize="@dimen/address_text_size" />
 
+            <LinearLayout android:id="@+id/group_phones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/text_unitcity" >
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/text_unitphone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/text_unitcity"
-                android:singleLine="true"
+                android:layout_below="@id/group_phones"
                 android:textSize="@dimen/address_text_size" />
 
             <TextView
