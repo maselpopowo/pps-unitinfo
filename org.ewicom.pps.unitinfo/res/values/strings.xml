@@ -37,5 +37,6 @@
     <string name="landline_phone_format">(%1$s) %2$s-%3$s-%4$s</string>
     <string name="extension_phone_fromat">(%1$s) %2$s-%3$s-%4$s wewn. %5$s</string>
     <string name="cell_phone_format">%1$s-%2$s-%3$s</string>
+    <string name="fax_landline_phone_format">fax (%1$s) %2$s-%3$s-%4$s</string>
 
 </resources>

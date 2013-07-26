@@ -251,13 +251,11 @@ public class TabAddressFragment extends Fragment {
 						switch (helper.checkPhoneType(p)) {
 						case Helper.LANDLINE_PHONE_FORMAT:
 							formatedPhone = helper.formatLandlinePhone(
-									onlyDigits,
-									getString(R.string.landline_phone_format));
+									onlyDigits);
 							break;
 
 						case Helper.CELL_PHONE_FORMAT:
-							formatedPhone = helper.formatCellPhone(onlyDigits,
-									getString(R.string.cell_phone_format));
+							formatedPhone = helper.formatCellPhone(onlyDigits);
 							break;
 
 						default:
@@ -266,10 +264,43 @@ public class TabAddressFragment extends Fragment {
 
 						addPhoneButton(formatedPhone, onlyDigits);
 
+					}else{
+						//czy to numer wewnetrzny?
+						final String onlyDigits = p.replaceAll("\\D+", "");
+						String formatedPhone = "";
+						if(helper.isExtensionNumber(p)){
+							formatedPhone = helper.formatExtensionPhone(onlyDigits);
+							addPhoneButton(formatedPhone, onlyDigits);
+						}
 					}
 				}
 			} else {
 				// brak podzialu przepisany ciag
+				String p = phones[0];
+				// wyczysc
+				p = helper.cleanPhoneString(p);
+				// czy jest tylko 9 cyfr - jeden numer
+				if (helper.digitsCount(p) == 9) {
+					final String onlyDigits = p.replaceAll("\\D+", "");
+					String formatedPhone = "";
+					switch (helper.checkPhoneType(p)) {
+					case Helper.LANDLINE_PHONE_FORMAT:
+						formatedPhone = helper.formatLandlinePhone(onlyDigits);
+						break;
+
+					case Helper.CELL_PHONE_FORMAT:
+						formatedPhone = helper.formatCellPhone(onlyDigits);
+						break;
+
+					default:
+						break;
+					}
+
+					addPhoneButton(formatedPhone, onlyDigits);
+
+				}else{
+					
+				}
 			}
 		}
 	}
