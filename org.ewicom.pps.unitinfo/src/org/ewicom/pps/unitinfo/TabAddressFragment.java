@@ -38,6 +38,8 @@
 package org.ewicom.pps.unitinfo;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -61,6 +63,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -164,7 +167,7 @@ public class TabAddressFragment extends Fragment {
 		setEmail();
 		setDescription();
 
-		generatePhoneButton();
+		new PreparePhoneButtons().execute();
 
 		if (unit.getSimg().isEmpty()) {
 			showImage.setTextColor(Color.GRAY);
@@ -211,98 +214,6 @@ public class TabAddressFragment extends Fragment {
 		phone.setText(unit.getPhone());
 
 		Linkify.addLinks(phone, Linkify.PHONE_NUMBERS);
-	}
-
-	public void addPhoneButton(String label, final String intentNumber) {
-		Button phoneButton = (Button) getActivity().getLayoutInflater()
-				.inflate(R.layout.button_phone, null);
-
-		phoneButton.setText(label);
-		phoneButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent dialIntent = new Intent(Intent.ACTION_DIAL);
-				dialIntent.setData(Uri.parse("tel:" + intentNumber));
-				startActivity(dialIntent);
-			}
-		});
-
-		phonesGroup.addView(phoneButton);
-	}
-
-	public void generatePhoneButton() {
-		String sPhones = unit.getPhone();
-		String[] phones = helper.splitPhones(sPhones);
-
-		// sprawdz czy sa jakies telefony
-		if (phones.length > 0 && phones != null) {
-
-			// czy cos podzielilismy?
-			if (phones.length > 1) {
-
-				for (String p : phones) {
-					// czyszczenie
-					p = helper.cleanPhoneString(p);
-					// czy jest podstawowa sprawa czyli ma tylko 9 cyfr
-					if (helper.digitsCount(p) == 9) {
-						final String onlyDigits = p.replaceAll("\\D+", "");
-						String formatedPhone = "";
-						switch (helper.checkPhoneType(p)) {
-						case Helper.LANDLINE_PHONE_FORMAT:
-							formatedPhone = helper.formatLandlinePhone(
-									onlyDigits);
-							break;
-
-						case Helper.CELL_PHONE_FORMAT:
-							formatedPhone = helper.formatCellPhone(onlyDigits);
-							break;
-
-						default:
-							break;
-						}
-
-						addPhoneButton(formatedPhone, onlyDigits);
-
-					}else{
-						//czy to numer wewnetrzny?
-						final String onlyDigits = p.replaceAll("\\D+", "");
-						String formatedPhone = "";
-						if(helper.isExtensionNumber(p)){
-							formatedPhone = helper.formatExtensionPhone(onlyDigits);
-							addPhoneButton(formatedPhone, onlyDigits);
-						}
-					}
-				}
-			} else {
-				// brak podzialu przepisany ciag
-				String p = phones[0];
-				// wyczysc
-				p = helper.cleanPhoneString(p);
-				// czy jest tylko 9 cyfr - jeden numer
-				if (helper.digitsCount(p) == 9) {
-					final String onlyDigits = p.replaceAll("\\D+", "");
-					String formatedPhone = "";
-					switch (helper.checkPhoneType(p)) {
-					case Helper.LANDLINE_PHONE_FORMAT:
-						formatedPhone = helper.formatLandlinePhone(onlyDigits);
-						break;
-
-					case Helper.CELL_PHONE_FORMAT:
-						formatedPhone = helper.formatCellPhone(onlyDigits);
-						break;
-
-					default:
-						break;
-					}
-
-					addPhoneButton(formatedPhone, onlyDigits);
-
-				}else{
-					
-				}
-			}
-		}
 	}
 
 	public void setEmail() {
@@ -456,6 +367,82 @@ public class TabAddressFragment extends Fragment {
 			imageView.setImageBitmap(image);
 		}
 
+	}
+
+	private class PreparePhoneButtons extends
+			AsyncTask<Void, Void, List<Button>> {
+
+		@Override
+		protected List<Button> doInBackground(Void... params) {
+			String sPhones = unit.getPhone();
+			String[] phones = helper.splitPhones(sPhones);
+			List<Button> buttonsList = new ArrayList<Button>();
+
+			if (phones.length > 0 && phones != null) {
+				for (String p : phones) {
+					p = helper.cleanPhoneString(p);
+					buttonsList.add(generatePhoneButton(p));
+				}
+			}
+
+			return buttonsList;
+		}
+
+		@Override
+		protected void onPostExecute(List<Button> result) {
+			super.onPostExecute(result);
+
+			for (Button b : result) {
+				phonesGroup.addView(b);
+			}
+
+		}
+
+		private Button generatePhoneButton(String phone) {
+			String label = phone;
+			String number = phone.replaceAll("\\D+", "");
+			Button button = null;
+
+			int phoneType = helper.checkPhoneType(phone);
+
+			switch (phoneType) {
+			case Helper.CELL_PHONE_FORMAT:
+				button = (Button) getActivity().getLayoutInflater().inflate(
+						R.layout.button_cell_phone, null);
+				label = helper.formatCellPhone(number);
+				break;
+			case Helper.LANDLINE_PHONE_FORMAT:
+				button = (Button) getActivity().getLayoutInflater().inflate(
+						R.layout.button_landline_phone, null);
+				label = helper.formatLandlinePhone(number);
+				break;
+			case Helper.EXTENSION_PHONE_FORMAT:
+				button = (Button) getActivity().getLayoutInflater().inflate(
+						R.layout.button_extension_phone, null);
+				label = helper.formatExtensionPhone(number);
+				number = number.substring(0, 9) + "," + number.substring(9);
+				Log.w("EX number", number);
+				break;
+			default:
+				break;
+			}
+
+			final String numberForIntent = number;
+			Log.w("EX numberForIntent", numberForIntent);
+			button.setText(label);
+			button.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+					dialIntent.setData(Uri.parse("tel:"
+							+ Uri.encode(numberForIntent)));
+					startActivity(dialIntent);
+				}
+			});
+
+			return button;
+		}
 	}
 
 }

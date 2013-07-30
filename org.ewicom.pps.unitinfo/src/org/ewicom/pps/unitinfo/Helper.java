@@ -83,9 +83,13 @@ public class Helper {
 	}
 
 	public int checkPhoneType(String phone) {
-		if (isLandlinePhone(phone)) {
-			return LANDLINE_PHONE_FORMAT;
-		} else {
+		if(isLandlinePhone(phone)){
+			if(isExtensionNumber(phone)){
+				return EXTENSION_PHONE_FORMAT;
+			}else{
+				return LANDLINE_PHONE_FORMAT;
+			}
+		}else{
 			return CELL_PHONE_FORMAT;
 		}
 	}
