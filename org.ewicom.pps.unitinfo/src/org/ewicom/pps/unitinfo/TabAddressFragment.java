@@ -38,6 +38,8 @@
 package org.ewicom.pps.unitinfo;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -61,10 +63,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -78,6 +82,8 @@ public class TabAddressFragment extends Fragment {
 	private Unit unit;
 
 	private TextView showImage;
+	private Helper helper;
+	private LinearLayout phonesGroup;
 
 	public TabAddressFragment() {
 	}
@@ -150,6 +156,9 @@ public class TabAddressFragment extends Fragment {
 
 		unit = unitDataSource.getUnitById(unitID);
 
+		helper = new Helper();
+		phonesGroup = (LinearLayout) getView().findViewById(R.id.group_phones);
+
 		setUnitName();
 		setUnitParent();
 		setStreet();
@@ -157,6 +166,8 @@ public class TabAddressFragment extends Fragment {
 		setPhone();
 		setEmail();
 		setDescription();
+
+		new PreparePhoneButtons().execute();
 
 		if (unit.getSimg().isEmpty()) {
 			showImage.setTextColor(Color.GRAY);
@@ -356,6 +367,80 @@ public class TabAddressFragment extends Fragment {
 			imageView.setImageBitmap(image);
 		}
 
+	}
+
+	private class PreparePhoneButtons extends
+			AsyncTask<Void, Void, List<Button>> {
+
+		@Override
+		protected List<Button> doInBackground(Void... params) {
+			String sPhones = unit.getPhone();
+			String[] phones = helper.splitPhones(sPhones);
+			List<Button> buttonsList = new ArrayList<Button>();
+
+			if (phones.length > 0 && phones != null) {
+				for (String p : phones) {
+					p = helper.cleanPhoneString(p);
+					buttonsList.add(generatePhoneButton(p));
+				}
+			}
+
+			return buttonsList;
+		}
+
+		@Override
+		protected void onPostExecute(List<Button> result) {
+			super.onPostExecute(result);
+
+			for (Button b : result) {
+				phonesGroup.addView(b);
+			}
+
+		}
+
+		private Button generatePhoneButton(String phone) {
+			String label = phone;
+			String number = phone.replaceAll("\\D+", "");
+			Button button = null;
+
+			int phoneType = helper.checkPhoneType(phone);
+
+			switch (phoneType) {
+			case Helper.CELL_PHONE_FORMAT:
+				button = (Button) getActivity().getLayoutInflater().inflate(
+						R.layout.button_cell_phone, null);
+				label = helper.formatCellPhone(number);
+				break;
+			case Helper.LANDLINE_PHONE_FORMAT:
+				button = (Button) getActivity().getLayoutInflater().inflate(
+						R.layout.button_landline_phone, null);
+				label = helper.formatLandlinePhone(number);
+				break;
+			case Helper.EXTENSION_PHONE_FORMAT:
+				button = (Button) getActivity().getLayoutInflater().inflate(
+						R.layout.button_extension_phone, null);
+				label = helper.formatExtensionPhone(number);
+				number = number.substring(0, 9) + "," + number.substring(9);
+				break;
+			default:
+				break;
+			}
+
+			final String numberForIntent = number;
+			button.setText(label);
+			button.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+					dialIntent.setData(Uri.parse("tel:"
+							+ Uri.encode(numberForIntent)));
+					startActivity(dialIntent);
+				}
+			});
+
+			return button;
+		}
 	}
 
 }

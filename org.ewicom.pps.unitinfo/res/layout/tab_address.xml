@@ -111,7 +111,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_unitcity"
-                android:singleLine="true"
                 android:textSize="@dimen/address_text_size" />
 
             <TextView
@@ -142,6 +141,13 @@
                 android:text="@string/openMapLink"
                 android:textColor="@color/link" />
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/group_phones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
 
         <!-- Panel z opisem jednostki -->
 
