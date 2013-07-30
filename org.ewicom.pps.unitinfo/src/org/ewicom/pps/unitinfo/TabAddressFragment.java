@@ -63,7 +63,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -117,7 +116,7 @@ public class TabAddressFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				openUnitOnMap(rootView);
+				openUnitOnMap();
 			}
 		});
 
@@ -169,7 +168,8 @@ public class TabAddressFragment extends Fragment {
 		setPhone();
 		setEmail();
 		setDescription();
-
+		
+		setLocation();
 		new PreparePhoneButtons().execute();
 		new PrepareEmailButtons().execute();
 
@@ -202,6 +202,20 @@ public class TabAddressFragment extends Fragment {
 		unitParent.setText(unit.getParentLname());
 	}
 
+	public void setLocation() {
+		Button locationButton = (Button) getView().findViewById(R.id.button_location);
+		String locationLabel = unit.getStreet() + System.getProperty("line.separator") + unit.getCity();
+		
+		locationButton.setText(locationLabel);
+		locationButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openUnitOnMap();
+			}
+		});
+	}
+	
 	public void setStreet() {
 		TextView street = (TextView) getView().findViewById(
 				R.id.text_unitstreet);
@@ -261,7 +275,7 @@ public class TabAddressFragment extends Fragment {
 		}
 	}
 
-	public void openUnitOnMap(View view) {
+	public void openUnitOnMap() {
 		String latitude = unit.getLatitude();
 		String longitude = unit.getLongitude();
 
