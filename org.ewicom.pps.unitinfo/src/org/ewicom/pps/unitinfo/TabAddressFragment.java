@@ -83,7 +83,9 @@ public class TabAddressFragment extends Fragment {
 
 	private TextView showImage;
 	private Helper helper;
+
 	private LinearLayout phonesGroup;
+	private LinearLayout emailsGroup;
 
 	public TabAddressFragment() {
 	}
@@ -158,6 +160,7 @@ public class TabAddressFragment extends Fragment {
 
 		helper = new Helper();
 		phonesGroup = (LinearLayout) getView().findViewById(R.id.group_phones);
+		emailsGroup = (LinearLayout) getView().findViewById(R.id.group_emails);
 
 		setUnitName();
 		setUnitParent();
@@ -168,6 +171,7 @@ public class TabAddressFragment extends Fragment {
 		setDescription();
 
 		new PreparePhoneButtons().execute();
+		new PrepareEmailButtons().execute();
 
 		if (unit.getSimg().isEmpty()) {
 			showImage.setTextColor(Color.GRAY);
@@ -441,6 +445,60 @@ public class TabAddressFragment extends Fragment {
 
 			return button;
 		}
+	}
+
+	private class PrepareEmailButtons extends
+			AsyncTask<Void, Void, List<Button>> {
+
+		@Override
+		protected List<Button> doInBackground(Void... params) {
+			String sEmails = unit.getEmail();
+			List<String> splitedEmails = helper.splitEmails(sEmails);
+			List<Button> buttons = new ArrayList<Button>();
+
+			for (String e : splitedEmails) {
+				buttons.add(generateEmailButton(e));
+			}
+
+			return buttons;
+		}
+
+		@Override
+		protected void onPostExecute(List<Button> result) {
+			super.onPostExecute(result);
+
+			for (Button b : result) {
+				emailsGroup.addView(b);
+			}
+
+		}
+
+		private Button generateEmailButton(String sEmail) {
+			final String emailToSend = sEmail;
+			Button button = (Button) getActivity().getLayoutInflater().inflate(
+					R.layout.button_email, null);
+
+			button.setText(emailToSend);
+			button.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+					emailIntent.setData(Uri.parse("mailto:" + emailToSend));
+					if (PPSAddressBook.isIntentAvailable(getActivity(),
+							emailIntent)) {
+						startActivity(emailIntent);
+					} else {
+						Toast.makeText(getActivity().getApplicationContext(),
+								R.string.no_app_email, Toast.LENGTH_LONG)
+								.show();
+					}
+				}
+			});
+
+			return button;
+		}
+
 	}
 
 }

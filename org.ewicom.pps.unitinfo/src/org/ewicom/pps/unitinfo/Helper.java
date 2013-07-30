@@ -1,5 +1,10 @@
 package org.ewicom.pps.unitinfo;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class Helper {
@@ -15,6 +20,8 @@ public class Helper {
 	public static final String EXTENSION_PHONE_PATTERN = "(%1$s) %2$s-%3$s-%4$s wewn. %5$s";
 	public static final String CELL_PHONE_PATTERN = "%1$s-%2$s-%3$s";
 	public static final String FAX_LANDLINE_PHONE_PATTERN = "fax (%1$s) %2$s-%3$s-%4$s";
+	
+	public static final String EMAIL_PATTERN = "[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})";
 
 	public Helper() {
 	}
@@ -44,6 +51,18 @@ public class Helper {
 		}
 
 		return phones;
+	}
+	
+	public List<String> splitEmails(String emails){
+		List<String> findedEmails = new ArrayList<String>();
+		Pattern emailPattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = emailPattern.matcher(emails);
+		
+		while(matcher.find()){
+			findedEmails.add(matcher.group());
+		}
+		
+		return findedEmails;
 	}
 
 	public String cleanPhoneString(String text) {
