@@ -108,10 +108,13 @@ public class Helper {
 
 	public boolean isExtensionNumber(String number) {
 		boolean flag = false;
-		String[] words = new String[] { "wewn.", "wewn", "wew.", "wew" };
+		String[] words = new String[] { "wewn.", "wewn", "wew.", "wew", "w.", "\\s+w\\s+" };
 
 		for (String w : words) {
-			flag = number.contains(w);
+			if(number.contains(w)){
+				flag = true;
+				break;
+			}
 		}
 
 		return flag;
@@ -122,7 +125,10 @@ public class Helper {
 		String[] words = new String[] { "fax", "fax.", "faks"};
 
 		for (String w : words) {
-			flag = number.contains(w);
+			if(number.contains(w)){
+				flag = true;
+				break;
+			}
 		}
 
 		return flag;

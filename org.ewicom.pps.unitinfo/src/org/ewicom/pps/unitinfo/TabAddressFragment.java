@@ -421,14 +421,12 @@ public class TabAddressFragment extends Fragment {
 						R.layout.button_extension_phone, null);
 				label = helper.formatExtensionPhone(number);
 				number = number.substring(0, 9) + "," + number.substring(9);
-				Log.w("EX number", number);
 				break;
 			default:
 				break;
 			}
 
 			final String numberForIntent = number;
-			Log.w("EX numberForIntent", numberForIntent);
 			button.setText(label);
 			button.setOnClickListener(new OnClickListener() {
 
