@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -53,6 +54,7 @@ import org.ewicom.pps.unitinfo.PPSAddressBook.PPSAddressBookPreferences;
 import org.ewicom.pps.unitinfo.model.Unit;
 import org.ewicom.pps.unitinfo.model.UnitDataSource;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -168,7 +170,7 @@ public class TabAddressFragment extends Fragment {
 		setPhone();
 		setEmail();
 		setDescription();
-		
+
 		setLocation();
 		new PreparePhoneButtons().execute();
 		new PrepareEmailButtons().execute();
@@ -203,19 +205,21 @@ public class TabAddressFragment extends Fragment {
 	}
 
 	public void setLocation() {
-		Button locationButton = (Button) getView().findViewById(R.id.button_location);
-		String locationLabel = unit.getStreet() + System.getProperty("line.separator") + unit.getCity();
-		
+		Button locationButton = (Button) getView().findViewById(
+				R.id.button_location);
+		String locationLabel = unit.getStreet()
+				+ System.getProperty("line.separator") + unit.getCity();
+
 		locationButton.setText(locationLabel);
 		locationButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				openUnitOnMap();
 			}
 		});
 	}
-	
+
 	public void setStreet() {
 		TextView street = (TextView) getView().findViewById(
 				R.id.text_unitstreet);
@@ -285,15 +289,17 @@ public class TabAddressFragment extends Fragment {
 		Toast noAppMap = Toast.makeText(context, R.string.no_map_app,
 				Toast.LENGTH_LONG);
 
-		if (latitude.equals("BRAK")) {
+		if (StringUtils.isEmpty(latitude)) {
 			noGeotoast.show();
 		} else {
 			String geoUri = "geo:" + latitude + "," + longitude + "?q="
-					+ latitude + "," + longitude + "(" + unit.getShortName()
-					+ ")";
-
+					+ latitude + "," + longitude;
 			Intent showUnitOnMapIntent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse(geoUri));
+			showUnitOnMapIntent.setComponent(new ComponentName(
+					"com.google.android.apps.maps",
+					"com.google.android.maps.MapsActivity"));
+			
 			if (PPSAddressBook.isIntentAvailable(getActivity(),
 					showUnitOnMapIntent)) {
 				startActivity(showUnitOnMapIntent);
