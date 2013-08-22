@@ -129,14 +129,14 @@ public class UnitsList extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.mainmenu, menu);
+		inflater.inflate(R.menu.menu_unitlist, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menu_about:
+		case R.id.action_about:
 			showAboutDialog();
 			return true;
 		default:
@@ -182,8 +182,8 @@ public class UnitsList extends ActionBarActivity {
 
 		unitCountTV.setText("COUNT: " + unitDataSource.getCountOfUnits());
 
-		builder.setTitle(R.string.menu_about)
-				.setIcon(R.drawable.ic_action_about)
+		builder.setTitle(R.string.action_about)
+				.setIcon(android.R.drawable.ic_dialog_info)
 				.setView(view)
 				.setNeutralButton(R.string.button_ok,
 						new DialogInterface.OnClickListener() {
