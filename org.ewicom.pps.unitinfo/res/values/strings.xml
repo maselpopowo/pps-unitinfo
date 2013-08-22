@@ -40,5 +40,6 @@
     <string name="fax_landline_phone_format">fax (%1$s) %2$s-%3$s-%4$s</string>
     
     <string name="action_about">O programie</string>
+    <string name="action_search">Wyszukaj jednostkę</string>
 
 </resources>

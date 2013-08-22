@@ -51,10 +51,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnCloseListener;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,73 +65,81 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class UnitsList extends ActionBarActivity {
+public class UnitsList extends ActionBarActivity implements OnQueryTextListener {
 
 	private UnitDataSource unitDataSource;
 
-	private TextWatcher searchTextWatcher;
-	private EditText searchEditText;
 	private ListView unitlist;
+	private UnitListAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.unitslist_searchview);
-		unitlist = (ListView) findViewById(android.R.id.list);
+		setContentView(R.layout.list_unitlist);
 
 		unitDataSource = new UnitDataSource(this);
 		unitDataSource.open();
 
 		List<Unit> units = unitDataSource.getAllUnits();
 
-		final UnitListAdapter adapter = new UnitListAdapter(this, units);
+		unitlist = (ListView) findViewById(android.R.id.list);
+		// unitlist.setTextFilterEnabled(true);
+		adapter = new UnitListAdapter(this, units);
 		unitlist.setAdapter(adapter);
-		
 		unitlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				Intent intent = new Intent();
 				intent.setClass(UnitsList.this, UnitDetails.class);
-				intent.putExtra(PPSAddressBookPreferences.INTENT_EXTRA_UNIT_ID, id);
+				intent.putExtra(PPSAddressBookPreferences.INTENT_EXTRA_UNIT_ID,
+						id);
 				startActivity(intent);
 			}
 		});
 
-		searchTextWatcher = new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				adapter.getFilter().filter(s);
-			}
-		};
-
-		searchEditText = (EditText) findViewById(R.id.unitslist_searchbox);
-		searchEditText.addTextChangedListener(searchTextWatcher);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_unitlist, menu);
+
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) MenuItemCompat
+				.getActionView(searchItem);
+
+		searchView.setOnQueryTextListener(this);
+		searchView.setOnCloseListener(new OnCloseListener() {
+			
+			@Override
+			public boolean onClose() {
+				adapter.getFilter().filter("");
+				return true;
+			}
+		});
+		
+		MenuItemCompat.setOnActionExpandListener(searchItem, new OnActionExpandListener() {
+			
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem arg0) {
+				return true;
+			}
+			
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem arg0) {
+				adapter.getFilter().filter("");
+				return true;
+			}
+		});
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -296,6 +306,17 @@ public class UnitsList extends ActionBarActivity {
 			};
 		}
 
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		adapter.getFilter().filter(newText);
+		return true;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		return false;
 	}
 
 }
