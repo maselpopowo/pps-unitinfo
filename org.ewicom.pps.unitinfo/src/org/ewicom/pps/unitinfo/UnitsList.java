@@ -46,12 +46,12 @@ import org.ewicom.pps.unitinfo.model.Unit;
 import org.ewicom.pps.unitinfo.model.UnitDataSource;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -61,6 +61,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -68,20 +69,20 @@ import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class UnitsList extends ListActivity {
-
-	private static final String TAG = "UnitsList";
+public class UnitsList extends ActionBarActivity {
 
 	private UnitDataSource unitDataSource;
 
 	private TextWatcher searchTextWatcher;
 	private EditText searchEditText;
+	private ListView unitlist;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.unitslist_searchview);
+		unitlist = (ListView) findViewById(android.R.id.list);
 
 		unitDataSource = new UnitDataSource(this);
 		unitDataSource.open();
@@ -89,7 +90,19 @@ public class UnitsList extends ListActivity {
 		List<Unit> units = unitDataSource.getAllUnits();
 
 		final UnitListAdapter adapter = new UnitListAdapter(this, units);
-		setListAdapter(adapter);
+		unitlist.setAdapter(adapter);
+		
+		unitlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				Intent intent = new Intent();
+				intent.setClass(UnitsList.this, UnitDetails.class);
+				intent.putExtra(PPSAddressBookPreferences.INTENT_EXTRA_UNIT_ID, id);
+				startActivity(intent);
+			}
+		});
 
 		searchTextWatcher = new TextWatcher() {
 
@@ -105,7 +118,6 @@ public class UnitsList extends ListActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				Log.d("WYSZUKIWANIE: ", s.toString());
 				adapter.getFilter().filter(s);
 			}
 		};
@@ -130,14 +142,6 @@ public class UnitsList extends ListActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = new Intent();
-		intent.setClass(this, UnitDetails.class);
-		intent.putExtra(PPSAddressBookPreferences.INTENT_EXTRA_UNIT_ID, id);
-		startActivity(intent);
 	}
 
 	@Override
