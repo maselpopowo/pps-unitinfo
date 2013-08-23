@@ -18,7 +18,7 @@
     <string name="menu_about">O programie</string>
     <string name="unitslist_hint">Wyszukaj jednostkę</string>
     <string name="dialog_about_info">Aplikacja prezentuje w przystępny sposób dane teleadresowe polskich jednostek penitencjarnych.\nDane aktualizowane są na podstawie informacji zamieszczonych na stronie http://sw.gov.pl.</string>
-    <string name="copying">Copyright &#169; 2012 Marcin Kunicki\nmasel.popowo@gmail.com</string>
+    <string name="copying">Copyright &#169; 2012 &#8211; 2013 Marcin Kunicki\nmasel.popowo@gmail.com</string>
     <string name="dialog_changelog_title">Aktualizacja</string>
     <string name="button_ok">OK</string>
     <string name="button_download">Pobierz</string>
@@ -38,5 +38,8 @@
     <string name="extension_phone_fromat">(%1$s) %2$s-%3$s-%4$s wewn. %5$s</string>
     <string name="cell_phone_format">%1$s-%2$s-%3$s</string>
     <string name="fax_landline_phone_format">fax (%1$s) %2$s-%3$s-%4$s</string>
+    
+    <string name="action_about">O programie</string>
+    <string name="action_search">Wyszukaj jednostkę</string>
 
 </resources>

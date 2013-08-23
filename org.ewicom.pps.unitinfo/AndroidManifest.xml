@@ -32,7 +32,8 @@
         <activity
             android:name=".UnitsList"
             android:label="@string/title_activity_unitlist"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light" >
         </activity>
         <activity
             android:name=".UnitDetails"

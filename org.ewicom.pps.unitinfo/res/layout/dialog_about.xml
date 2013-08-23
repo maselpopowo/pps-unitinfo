@@ -14,8 +14,7 @@
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
             android:layout_marginTop="5dip"
-            android:text="@string/copying"
-            android:textColor="#FFFFFF" />
+            android:text="@string/copying" />
 
         <TextView
             android:id="@+id/dialog_about_appversion"
@@ -24,7 +23,6 @@
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
             android:layout_marginTop="5dip"
-            android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
         <TextView
@@ -33,7 +31,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
-            android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
         <TextView
@@ -42,7 +39,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
-            android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
         <TextView
@@ -53,8 +49,7 @@
             android:layout_marginTop="5dip"
             android:autoLink="all"
             android:gravity="fill_horizontal"
-            android:text="@string/dialog_about_info"
-            android:textColor="#FFFFFF" />
+            android:text="@string/dialog_about_info" />
     </LinearLayout>
 
 </ScrollView>
