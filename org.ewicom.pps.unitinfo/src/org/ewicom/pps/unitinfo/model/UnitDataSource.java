@@ -137,6 +137,24 @@ public class UnitDataSource {
 		cursor.close();
 		return units;
 	}
+	
+	public List<Unit> getUnitsByType(long unitTypeId){
+		List<Unit> units = new ArrayList<Unit>();
+		
+		Cursor cursor = db.query(UnitColumns.UNIT_TABLE_NAME, UNIT_PROJECTION,
+				UnitColumns.UNIT_TYPE_ID + "=" + String.valueOf(unitTypeId), null, null, null,
+				UnitColumns.DEFAULT_SORT_ORDER);
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Unit unit = cursorToUnit(cursor);
+			units.add(unit);
+			cursor.moveToNext();
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return units;
+	}
 
 	private Unit cursorToUnit(Cursor cursor) {
 		Unit unit = new Unit();
