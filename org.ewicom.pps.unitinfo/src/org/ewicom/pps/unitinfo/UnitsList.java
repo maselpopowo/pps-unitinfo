@@ -89,7 +89,6 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 		List<Unit> units = unitDataSource.getAllUnits();
 
 		unitlist = (ListView) findViewById(android.R.id.list);
-		// unitlist.setTextFilterEnabled(true);
 		adapter = new UnitListAdapter(this, units);
 		unitlist.setAdapter(adapter);
 		unitlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
