@@ -53,6 +53,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnCloseListener;
@@ -64,6 +65,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -74,21 +76,29 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 
 	private UnitDataSource unitDataSource;
 
+	private DrawerLayout rootLayout;
+	
 	private ListView unitlist;
 	private UnitListAdapter adapter;
+	
+	private String[] drawerLabels;
+	private ListView drawerList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.list_unitlist);
+		setContentView(R.layout.drawer_unitlist);
+		
+		rootLayout = (DrawerLayout) findViewById(R.id.drawer_layout_unitlist);
+		unitlist = (ListView) findViewById(R.id.list_unitlist);
+		drawerList = (ListView) findViewById(R.id.drawer_left_unitlist);
 
 		unitDataSource = new UnitDataSource(this);
 		unitDataSource.open();
 
 		List<Unit> units = unitDataSource.getAllUnits();
 
-		unitlist = (ListView) findViewById(android.R.id.list);
 		adapter = new UnitListAdapter(this, units);
 		unitlist.setAdapter(adapter);
 		unitlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -103,6 +113,9 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 				startActivity(intent);
 			}
 		});
+		
+		drawerLabels = getResources().getStringArray(R.array.drawer_unitlist_array);
+		drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerLabels));
 
 	}
 
