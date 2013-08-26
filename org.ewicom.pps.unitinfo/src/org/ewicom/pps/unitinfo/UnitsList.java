@@ -72,7 +72,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class UnitsList extends ActionBarActivity implements OnQueryTextListener {
 
@@ -103,10 +102,10 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 		unitTypeDataSource = new UnitTypeDataSource(this);
 		unitTypeDataSource.open();
 
-		List<Unit> units = unitDataSource.getAllUnits();
-		List<UnitType> types = unitTypeDataSource.getAllUnitTypes();
+		List<Unit> allUnits = unitDataSource.getAllUnits();
+		List<UnitType> allTypes = unitTypeDataSource.getAllUnitTypes();
 
-		unitAdapter = new UnitListAdapter(this, units);
+		unitAdapter = new UnitListAdapter(this, allUnits);
 		unitlist.setAdapter(unitAdapter);
 		unitlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -121,7 +120,7 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 			}
 		});
 
-		ldrawerAdapter = new LeftDrawerAdapter(this, types);
+		ldrawerAdapter = new LeftDrawerAdapter(this, allTypes);
 		drawerLabels = getResources().getStringArray(
 				R.array.drawer_unitlist_array);
 		drawerList.setAdapter(ldrawerAdapter);
@@ -181,6 +180,9 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 		switch (item.getItemId()) {
 		case R.id.action_about:
 			showAboutDialog();
+			return true;
+		case R.id.action_allunits:
+			unitAdapter.repopulate(unitDataSource.getAllUnits());
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -256,11 +258,11 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 			this.inflator = (LayoutInflater) mContext
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 		}
-		
+
 		public void repopulate(List<Unit> newUnits) {
 			this.units.clear();
 			this.units = newUnits;
-			notifyDataSetChanged();
+			UnitListAdapter.this.notifyDataSetChanged();
 		}
 
 		@Override

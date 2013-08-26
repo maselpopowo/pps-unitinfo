@@ -41,5 +41,6 @@
     
     <string name="action_about">O programie</string>
     <string name="action_search">Wyszukaj jednostkę</string>
+    <string name="action_allunits">Pokaż wszystkie</string>
 
 </resources>
