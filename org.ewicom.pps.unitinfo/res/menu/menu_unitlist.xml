@@ -7,11 +7,6 @@
         pps:showAsAction="ifRoom|collapseActionView"
         pps:actionViewClass="android.support.v7.widget.SearchView"/>
     <item
-        android:id="@+id/action_allunits"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        android:title="@string/action_allunits"
-        pps:showAsAction="ifRoom|withText"/>
-    <item
         android:id="@+id/action_about"
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/action_about"

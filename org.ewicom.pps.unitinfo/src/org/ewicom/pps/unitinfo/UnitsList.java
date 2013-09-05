@@ -42,6 +42,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.ewicom.pps.unitinfo.PPSAddressBook.PPSAddressBookPreferences;
+import org.ewicom.pps.unitinfo.model.DrawerHeader;
+import org.ewicom.pps.unitinfo.model.DrawerList;
 import org.ewicom.pps.unitinfo.model.Unit;
 import org.ewicom.pps.unitinfo.model.UnitDataSource;
 import org.ewicom.pps.unitinfo.model.UnitType;
@@ -52,7 +54,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
@@ -79,11 +83,11 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 	private UnitTypeDataSource unitTypeDataSource;
 
 	private DrawerLayout rootLayout;
+	private ActionBarDrawerToggle mDrawerToogle;
 
 	private ListView unitlist;
 	private UnitListAdapter unitAdapter;
 
-	private String[] drawerLabels;
 	private ListView drawerList;
 	private LeftDrawerAdapter ldrawerAdapter;
 
@@ -120,9 +124,21 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 			}
 		});
 
-		ldrawerAdapter = new LeftDrawerAdapter(this, allTypes);
-		drawerLabels = getResources().getStringArray(
-				R.array.drawer_unitlist_array);
+		List<DrawerItem> drawerItems = new ArrayList<DrawerItem>();
+		DrawerHeader header = new DrawerHeader(getLayoutInflater(),
+				getString(R.string.drawer_header_unittype));
+		drawerItems.add(header);
+
+		DrawerList allUnitsItem = new DrawerList(getLayoutInflater(),
+				getString(R.string.drawer_list_allunits), 0);
+		drawerItems.add(allUnitsItem);
+
+		for (UnitType t : allTypes) {
+			drawerItems.add(new DrawerList(getLayoutInflater(), t.getName(), t
+					.getId()));
+		}
+
+		ldrawerAdapter = new LeftDrawerAdapter(UnitsList.this, drawerItems);
 		drawerList.setAdapter(ldrawerAdapter);
 		drawerList
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,11 +146,41 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						List<Unit> units = unitDataSource.getUnitsByType(id);
-						unitAdapter.repopulate(units);
-						rootLayout.closeDrawer(drawerList);
+						if (id > 0) {
+							List<Unit> units = unitDataSource
+									.getUnitsByType(id);
+							unitAdapter.repopulate(units);
+							rootLayout.closeDrawer(drawerList);
+						}
+
+						if (id == 0) {
+							List<Unit> units = unitDataSource.getAllUnits();
+							unitAdapter.repopulate(units);
+							rootLayout.closeDrawer(drawerList);
+						}
 					}
 				});
+
+		mDrawerToogle = new ActionBarDrawerToggle(this, rootLayout,
+				R.drawable.ic_drawer, R.string.open_drawer,
+				R.string.close_drawer) {
+
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				getActionBar().setTitle("Lista Jednostek");
+			}
+
+			@Override
+			public void onDrawerOpened(View drawerView) {
+				getActionBar().setTitle("Filtr");
+			}
+
+		};
+
+		rootLayout.setDrawerListener(mDrawerToogle);
+
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 
 	}
 
@@ -176,13 +222,26 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 	}
 
 	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		mDrawerToogle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mDrawerToogle.syncState();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if(mDrawerToogle.onOptionsItemSelected(item)){
+			return true;
+		}
+		
 		switch (item.getItemId()) {
 		case R.id.action_about:
 			showAboutDialog();
-			return true;
-		case R.id.action_allunits:
-			unitAdapter.repopulate(unitDataSource.getAllUnits());
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -360,75 +419,6 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		return false;
-	}
-
-	/**
-	 * LeftDrawerAdapter is class adapter for left drawer in UnitList Activity.
-	 * 
-	 * @author Marcin Kunicki
-	 * @since 1.1
-	 * 
-	 */
-	private class LeftDrawerAdapter extends BaseAdapter {
-
-		private List<UnitType> mTypes;
-		private Context mContext;
-		private LayoutInflater mLayoutInflater;
-
-		/**
-		 * Constructor
-		 * 
-		 * @param context
-		 *            - Actual context
-		 * @param types
-		 *            - List of Unit Types
-		 */
-		public LeftDrawerAdapter(Context context, List<UnitType> types) {
-			mContext = context;
-			mTypes = types;
-			mLayoutInflater = (LayoutInflater) mContext
-					.getSystemService(LAYOUT_INFLATER_SERVICE);
-		}
-
-		@Override
-		public int getCount() {
-			return mTypes.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return mTypes.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return mTypes.get(position).getId();
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final Holder mHolder;
-			View v = convertView;
-			if (convertView == null) {
-				mHolder = new Holder();
-				v = mLayoutInflater.inflate(R.layout.item_ldrawer_unitlist,
-						null);
-				mHolder.name = (TextView) v
-						.findViewById(R.id.text_ldrawer_name_unitlist);
-				v.setTag(mHolder);
-			} else {
-				mHolder = (Holder) v.getTag();
-			}
-
-			mHolder.name.setText(mTypes.get(position).getName());
-
-			return v;
-		}
-
-		private class Holder {
-			private TextView name;
-		}
-
 	}
 
 }

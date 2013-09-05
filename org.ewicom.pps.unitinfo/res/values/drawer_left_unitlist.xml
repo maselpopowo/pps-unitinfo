@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="drawer_unitlist_array">
-        <item>Tylko Areszty śledcze (AŚ)</item>
-        <item>Tylko Zakłady karne (ZK)</item>
-        <item>Tylko Oddziały zewnętrzne (OZ)</item>
-    </string-array>
-</resources>
