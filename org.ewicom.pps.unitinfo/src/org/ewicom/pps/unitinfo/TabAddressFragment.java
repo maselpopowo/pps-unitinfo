@@ -100,10 +100,10 @@ public class TabAddressFragment extends Fragment {
 		if (args != null) {
 			this.unitID = args.getLong("unitID");
 		}
-		
+
 		Button unitWebSite = (Button) rootView.findViewById(R.id.button_www);
 		unitWebSite.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				openUnitWebsite(rootView);
@@ -258,7 +258,7 @@ public class TabAddressFragment extends Fragment {
 			showUnitOnMapIntent.setComponent(new ComponentName(
 					"com.google.android.apps.maps",
 					"com.google.android.maps.MapsActivity"));
-			
+
 			if (PPSAddressBook.isIntentAvailable(getActivity(),
 					showUnitOnMapIntent)) {
 				startActivity(showUnitOnMapIntent);
@@ -418,7 +418,14 @@ public class TabAddressFragment extends Fragment {
 					Intent dialIntent = new Intent(Intent.ACTION_DIAL);
 					dialIntent.setData(Uri.parse("tel:"
 							+ Uri.encode(numberForIntent)));
-					startActivity(dialIntent);
+					if (dialIntent.resolveActivity(getActivity()
+							.getPackageManager()) != null) {
+						startActivity(dialIntent);
+					} else {
+						Toast.makeText(getActivity(), R.string.no_dial_app,
+								Toast.LENGTH_LONG).show();
+					}
+
 				}
 			});
 
@@ -464,6 +471,7 @@ public class TabAddressFragment extends Fragment {
 				public void onClick(View v) {
 					Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
 					emailIntent.setData(Uri.parse("mailto:" + emailToSend));
+
 					if (PPSAddressBook.isIntentAvailable(getActivity(),
 							emailIntent)) {
 						startActivity(emailIntent);
