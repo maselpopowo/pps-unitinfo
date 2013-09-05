@@ -11,10 +11,13 @@
     <string name="info_appcheckupdate">Sprawdzam aktualizacje</string>
     <string name="info_appdownloaddatabasefile">Pobieranie pliku bazy danych</string>
     <string name="info_copydatabasefile">Kopiowanie pliku bazy danych</string>
+    
     <string name="empty_geodata">Brak danych geolokalizacyjnych</string>
     <string name="no_app_email">Brak aplikacji do obsługi poczty elektronicznej</string>
     <string name="no_map_app">Brak aplikacji do obsługi map</string>
     <string name="no_www_app">Brak aplikacji do obsługi stron www</string>
+    <string name="no_dial_app">Brak aplikacji do obsługi rozmów telefonicznych</string>
+    
     <string name="menu_about">O programie</string>
     <string name="unitslist_hint">Wyszukaj jednostkę</string>
     <string name="dialog_about_info">Aplikacja prezentuje w przystępny sposób dane teleadresowe polskich jednostek penitencjarnych.\nDane aktualizowane są na podstawie informacji zamieszczonych na stronie http://sw.gov.pl.</string>
@@ -42,10 +45,13 @@
     <string name="action_about">O programie</string>
     <string name="action_search">Wyszukaj jednostkę</string>
     <string name="action_allunits">Pokaż wszystkie</string>
+    <string name="action_www">Strona WWW</string>
     
     <string name="drawer_header_unittype">Filtruj wg typów</string>
     <string name="drawer_list_allunits">Wszystkie</string>
     <string name="open_drawer">Otwórz panel</string>
     <string name="close_drawer">Zamknij panel</string>
+    
+    <string name="contentdescription_unitimage">Zdjęcie jednostki</string>
 
 </resources>

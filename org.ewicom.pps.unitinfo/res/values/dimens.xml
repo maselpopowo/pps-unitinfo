@@ -11,7 +11,9 @@
     <dimen name="panel_right_padding">20dp</dimen>
     
     <dimen name="unitname_bottom_margin">18dp</dimen>
+    
     <dimen name="line_top_margin">10dp</dimen>
+    <dimen name="line_layout_height">1dp</dimen>
     
     <dimen name="unitname_text_size">18sp</dimen>
     <dimen name="unitparent_text_size">16sp</dimen>
@@ -19,5 +21,9 @@
     
     <!-- PODSTAWOWE -->
     <dimen name="default_text_size">16sp</dimen>
+    
+    <!-- Buttons - tab_address -->
+    <dimen name="button_unit_drawable_padding">20dp</dimen>
+    <dimen name="button_unit_text_size">18sp</dimen>
 
 </resources>

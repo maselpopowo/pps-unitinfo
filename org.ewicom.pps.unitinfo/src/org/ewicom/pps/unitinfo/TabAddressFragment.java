@@ -64,7 +64,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -102,23 +101,12 @@ public class TabAddressFragment extends Fragment {
 			this.unitID = args.getLong("unitID");
 		}
 
-		TextView fullDescriptionLink = (TextView) rootView
-				.findViewById(R.id.link_opendescription);
-		fullDescriptionLink.setOnClickListener(new OnClickListener() {
+		Button unitWebSite = (Button) rootView.findViewById(R.id.button_www);
+		unitWebSite.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				openUnitWebsite(rootView);
-			}
-		});
-
-		TextView openMapLink = (TextView) rootView
-				.findViewById(R.id.link_openmap);
-		openMapLink.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				openUnitOnMap();
 			}
 		});
 
@@ -165,10 +153,6 @@ public class TabAddressFragment extends Fragment {
 
 		setUnitName();
 		setUnitParent();
-		setStreet();
-		setCity();
-		setPhone();
-		setEmail();
 		setDescription();
 
 		setLocation();
@@ -218,31 +202,6 @@ public class TabAddressFragment extends Fragment {
 				openUnitOnMap();
 			}
 		});
-	}
-
-	public void setStreet() {
-		TextView street = (TextView) getView().findViewById(
-				R.id.text_unitstreet);
-		street.setText(unit.getStreet());
-	}
-
-	public void setCity() {
-		TextView city = (TextView) getView().findViewById(R.id.text_unitcity);
-		city.setText(unit.getCity());
-	}
-
-	public void setPhone() {
-		TextView phone = (TextView) getView().findViewById(R.id.text_unitphone);
-		phone.setText(unit.getPhone());
-
-		Linkify.addLinks(phone, Linkify.PHONE_NUMBERS);
-	}
-
-	public void setEmail() {
-		TextView email = (TextView) getView().findViewById(R.id.text_unitemail);
-		email.setText(unit.getEmail());
-
-		Linkify.addLinks(email, Linkify.EMAIL_ADDRESSES);
 	}
 
 	public void setDescription() {
@@ -299,7 +258,7 @@ public class TabAddressFragment extends Fragment {
 			showUnitOnMapIntent.setComponent(new ComponentName(
 					"com.google.android.apps.maps",
 					"com.google.android.maps.MapsActivity"));
-			
+
 			if (PPSAddressBook.isIntentAvailable(getActivity(),
 					showUnitOnMapIntent)) {
 				startActivity(showUnitOnMapIntent);
@@ -459,7 +418,14 @@ public class TabAddressFragment extends Fragment {
 					Intent dialIntent = new Intent(Intent.ACTION_DIAL);
 					dialIntent.setData(Uri.parse("tel:"
 							+ Uri.encode(numberForIntent)));
-					startActivity(dialIntent);
+					if (dialIntent.resolveActivity(getActivity()
+							.getPackageManager()) != null) {
+						startActivity(dialIntent);
+					} else {
+						Toast.makeText(getActivity(), R.string.no_dial_app,
+								Toast.LENGTH_LONG).show();
+					}
+
 				}
 			});
 
@@ -505,6 +471,7 @@ public class TabAddressFragment extends Fragment {
 				public void onClick(View v) {
 					Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
 					emailIntent.setData(Uri.parse("mailto:" + emailToSend));
+
 					if (PPSAddressBook.isIntentAvailable(getActivity(),
 							emailIntent)) {
 						startActivity(emailIntent);
