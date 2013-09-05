@@ -60,7 +60,7 @@ public class UnitDataSource {
 			UnitColumns.PHONE, UnitColumns.EMAIL, UnitColumns.LATITUDE, UnitColumns.LONGITUDE,
 			UnitColumns.DESCRIPTION, UnitColumns.IMG, UnitColumns.SIMG, 
 			UnitColumns.PARENT_LNAME, UnitColumns.PARENT_ID, 
-			UnitColumns.LINK};
+			UnitColumns.LINK, UnitColumns.UNIT_TYPE_ID};
 
 	private static final int COLUMN_INDEX_UNIT_ID = 0;
 	private static final int COLUMN_INDEX_UNIT_NAME = 1;
@@ -77,6 +77,7 @@ public class UnitDataSource {
 	private static final int COLUMN_INDEX_PARENT_LNAME = 12;
 	private static final int COLUMN_INDEX_PARENT_ID = 13;
 	private static final int COLUMN_INDEX_UNIT_LINK = 14;
+	private static final int COLUMN_INDEX_UNIT_TYPE_ID = 15;
 
 	public UnitDataSource(Context context) {
 		dbHelper = new DatabaseHelper(context);
@@ -136,6 +137,24 @@ public class UnitDataSource {
 		cursor.close();
 		return units;
 	}
+	
+	public List<Unit> getUnitsByType(long unitTypeId){
+		List<Unit> units = new ArrayList<Unit>();
+		
+		Cursor cursor = db.query(UnitColumns.UNIT_TABLE_NAME, UNIT_PROJECTION,
+				UnitColumns.UNIT_TYPE_ID + "=" + String.valueOf(unitTypeId), null, null, null,
+				UnitColumns.DEFAULT_SORT_ORDER);
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Unit unit = cursorToUnit(cursor);
+			units.add(unit);
+			cursor.moveToNext();
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return units;
+	}
 
 	private Unit cursorToUnit(Cursor cursor) {
 		Unit unit = new Unit();
@@ -155,6 +174,7 @@ public class UnitDataSource {
 		unit.setParentLname(cursor.getString(COLUMN_INDEX_PARENT_LNAME));
 		unit.setParentId(cursor.getLong(COLUMN_INDEX_PARENT_ID));
 		unit.setLink(cursor.getString(COLUMN_INDEX_UNIT_LINK));
+		unit.setLink(cursor.getString(COLUMN_INDEX_UNIT_TYPE_ID));
 
 		return unit;
 	}

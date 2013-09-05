@@ -37,155 +37,35 @@
  **************************************************************************/
 package org.ewicom.pps.unitinfo.model;
 
-public class Unit {
+public class UnitType {
 
 	private long id;
 	private String name;
 	private String shortName;
-	private String street;
-	private String city;
-	private String phone;
-	private String email;
-	private String latitude;
-	private String longitude;
-	private String description;
-	private String img;
-	private String simg;
-	private String parentLname;
-	private long parentId;
-	private String link;
-	private long unitTypeId;
-
+	
 	public long getId() {
 		return id;
 	}
-
 	public void setId(long id) {
 		this.id = id;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public String getShortName() {
 		return shortName;
 	}
-
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-
-	public String getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
-	}
-
-	public String getSimg() {
-		return simg;
-	}
-
-	public void setSimg(String simg) {
-		this.simg = simg;
-	}
-
-	public String getParentLname() {
-		return parentLname;
-	}
-
-	public void setParentLname(String parentLname) {
-		this.parentLname = parentLname;
-	}
-
-	public long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(long parentId) {
-		this.parentId = parentId;
-	}
-
-	public String getLink() {
-		return link;
-	}
-
-	public void setLink(String link) {
-		this.link = link;
-	}
-
-	public long getUnitTypeId() {
-		return unitTypeId;
-	}
-
-	public void setUnitTypeId(long unitTypeId) {
-		this.unitTypeId = unitTypeId;
-	}
-
 	@Override
 	public String toString() {
-		return this.shortName;
+		return getName();
 	}
+	
+	
+	
 }

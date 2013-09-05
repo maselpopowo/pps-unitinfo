@@ -259,6 +259,8 @@ public class PPSAddressBook {
 		public static final String PARENT_ID = "parent_id";
 		
 		public static final String LINK = "link";
+		
+		public static final String UNIT_TYPE_ID = "unit_type_id";
 	}
 
 	/**
@@ -406,6 +408,53 @@ public class PPSAddressBook {
 		 * </P>
 		 */
 		public static final String PHONE = "phone";
+	}
+	
+	public static final class UnitTypeColumns implements BaseColumns {
+		/**
+		 * Content style Uri for unit type Table
+		 */
+		public static final Uri CONTENT_URI = Uri.parse("content://"
+				+ AUTHORITY + "/unittypes");
+
+		/**
+		 * The MIME type of {@link #CONTENT_URI} providing a directory of
+		 * unit types.
+		 */
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.ewicom.unittype";
+
+		/**
+		 * The MIME type of a {@link #CONTENT_URI} sub-directory of a single
+		 * unit type.
+		 */
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.ewicom.unittype";
+
+		/**
+		 * Default sort order for table phone (by _id)
+		 */
+		public static final String DEFAULT_SORT_ORDER = "_id ASC";
+
+		public static final String UNITTYPE_TABLE_NAME = "unit_type";
+
+		/*****************************************************
+		 * Definitions of Columns
+		 */
+
+		/**
+		 * Long name
+		 * <P>
+		 * type: TEXT
+		 * </P>
+		 */
+		public static final String NAME = "name";
+
+		/**
+		 * Short name
+		 * <P>
+		 * type: TEXT
+		 * </P>
+		 */
+		public static final String SHORT_NAME = "short_name";
 	}
 
 }

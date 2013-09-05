@@ -41,5 +41,11 @@
     
     <string name="action_about">O programie</string>
     <string name="action_search">Wyszukaj jednostkę</string>
+    <string name="action_allunits">Pokaż wszystkie</string>
+    
+    <string name="drawer_header_unittype">Filtruj wg typów</string>
+    <string name="drawer_list_allunits">Wszystkie</string>
+    <string name="open_drawer">Otwórz panel</string>
+    <string name="close_drawer">Zamknij panel</string>
 
 </resources>
