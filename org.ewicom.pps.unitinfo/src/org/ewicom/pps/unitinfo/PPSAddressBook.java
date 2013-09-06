@@ -37,7 +37,6 @@
  **************************************************************************/
 package org.ewicom.pps.unitinfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
