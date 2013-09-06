@@ -7,3 +7,7 @@ Projekt aplikacji androida udostępniającej dane o jednostkach penitencjarnych 
   <img alt="Get it on Google Play"
        src="https://developer.android.com/images/brand/pl_generic_rgb_wo_60.png" />
 </a>
+
+Dodatkowe wymagania:
+
+* Android Library Project - android-support-v7-appcompat.

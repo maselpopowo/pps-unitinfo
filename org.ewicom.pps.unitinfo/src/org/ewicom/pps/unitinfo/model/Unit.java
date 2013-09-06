@@ -54,6 +54,7 @@ public class Unit {
 	private String parentLname;
 	private long parentId;
 	private String link;
+	private long unitTypeId;
 
 	public long getId() {
 		return id;
@@ -173,6 +174,14 @@ public class Unit {
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+
+	public long getUnitTypeId() {
+		return unitTypeId;
+	}
+
+	public void setUnitTypeId(long unitTypeId) {
+		this.unitTypeId = unitTypeId;
 	}
 
 	@Override

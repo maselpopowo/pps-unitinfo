@@ -35,40 +35,37 @@
  * jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
  * Place, Fifth Floor, Boston, MA  02110-1301  USA
  **************************************************************************/
-package org.ewicom.pps.unitinfo;
+package org.ewicom.pps.unitinfo.model;
 
-import java.util.List;
+public class UnitType {
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-	private List<Fragment> fragments;
-	private List<String> titles;
-
-	public SectionsPagerAdapter(FragmentManager fm, List<Fragment> fragments, List<String> titles) {
-		super(fm);
-		this.fragments = fragments;
-		this.titles = titles;
+	private long id;
+	private String name;
+	private String shortName;
+	
+	public long getId() {
+		return id;
 	}
-
-	@Override
-	public Fragment getItem(int position) {
-		return this.fragments.get(position);
+	public void setId(long id) {
+		this.id = id;
 	}
-
-	@Override
-	public int getCount() {
-		return this.fragments.size();
+	public String getName() {
+		return name;
 	}
-
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
 	@Override
-	public CharSequence getPageTitle(int position) {
-		return titles.get(position);
+	public String toString() {
+		return getName();
 	}
 	
 	
-
+	
 }

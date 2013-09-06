@@ -42,89 +42,211 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.ewicom.pps.unitinfo.PPSAddressBook.PPSAddressBookPreferences;
+import org.ewicom.pps.unitinfo.model.DrawerHeader;
+import org.ewicom.pps.unitinfo.model.DrawerList;
 import org.ewicom.pps.unitinfo.model.Unit;
 import org.ewicom.pps.unitinfo.model.UnitDataSource;
+import org.ewicom.pps.unitinfo.model.UnitType;
+import org.ewicom.pps.unitinfo.model.UnitTypeDataSource;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnCloseListener;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class UnitsList extends ListActivity {
-
-	private static final String TAG = "UnitsList";
+public class UnitsList extends ActionBarActivity implements OnQueryTextListener {
 
 	private UnitDataSource unitDataSource;
+	private UnitTypeDataSource unitTypeDataSource;
 
-	private TextWatcher searchTextWatcher;
-	private EditText searchEditText;
+	private DrawerLayout rootLayout;
+	private ActionBarDrawerToggle mDrawerToogle;
+
+	private ListView unitlist;
+	private UnitListAdapter unitAdapter;
+
+	private ListView drawerList;
+	private LeftDrawerAdapter ldrawerAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.unitslist_searchview);
+		setContentView(R.layout.activity_unitlist);
+
+		rootLayout = (DrawerLayout) findViewById(R.id.drawer_layout_unitlist);
+		unitlist = (ListView) findViewById(R.id.list_unitlist);
+		drawerList = (ListView) findViewById(R.id.drawer_left_unitlist);
 
 		unitDataSource = new UnitDataSource(this);
 		unitDataSource.open();
+		unitTypeDataSource = new UnitTypeDataSource(this);
+		unitTypeDataSource.open();
 
-		List<Unit> units = unitDataSource.getAllUnits();
+		List<Unit> allUnits = unitDataSource.getAllUnits();
+		List<UnitType> allTypes = unitTypeDataSource.getAllUnitTypes();
 
-		final UnitListAdapter adapter = new UnitListAdapter(this, units);
-		setListAdapter(adapter);
-
-		searchTextWatcher = new TextWatcher() {
+		unitAdapter = new UnitListAdapter(this, allUnits);
+		unitlist.setAdapter(unitAdapter);
+		unitlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent intent = new Intent();
+				intent.setClass(UnitsList.this, UnitDetails.class);
+				intent.putExtra(PPSAddressBookPreferences.INTENT_EXTRA_UNIT_ID,
+						id);
+				startActivity(intent);
+			}
+		});
+
+		List<DrawerItem> drawerItems = new ArrayList<DrawerItem>();
+		DrawerHeader header = new DrawerHeader(getLayoutInflater(),
+				getString(R.string.drawer_header_unittype));
+		drawerItems.add(header);
+
+		DrawerList allUnitsItem = new DrawerList(getLayoutInflater(),
+				getString(R.string.drawer_list_allunits), 0);
+		drawerItems.add(allUnitsItem);
+
+		for (UnitType t : allTypes) {
+			drawerItems.add(new DrawerList(getLayoutInflater(), t.getName(), t
+					.getId()));
+		}
+
+		ldrawerAdapter = new LeftDrawerAdapter(UnitsList.this, drawerItems);
+		drawerList.setAdapter(ldrawerAdapter);
+		drawerList
+				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+
+						if (id > 0) {
+							List<Unit> units = unitDataSource
+									.getUnitsByType(id);
+							unitAdapter.repopulate(units);
+							rootLayout.closeDrawer(drawerList);
+							getSupportActionBar().setTitle(
+									"Filtr("
+											+ ldrawerAdapter.getItem(position)
+													.getName() + ")");
+						}
+
+						if (id == 0) {
+							List<Unit> units = unitDataSource.getAllUnits();
+							unitAdapter.repopulate(units);
+							rootLayout.closeDrawer(drawerList);
+							getSupportActionBar().setTitle(R.string.title_activity_unitlist);
+						}
+					}
+				});
+
+		mDrawerToogle = new ActionBarDrawerToggle(this, rootLayout,
+				R.drawable.ic_drawer, R.string.open_drawer,
+				R.string.close_drawer) {
+
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				// getActionBar().setTitle("Lista Jednostek");
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void onDrawerOpened(View drawerView) {
+				// getActionBar().setTitle("Filtr");
 			}
 
-			@Override
-			public void afterTextChanged(Editable s) {
-				Log.d("WYSZUKIWANIE: ", s.toString());
-				adapter.getFilter().filter(s);
-			}
 		};
 
-		searchEditText = (EditText) findViewById(R.id.unitslist_searchbox);
-		searchEditText.addTextChangedListener(searchTextWatcher);
+		rootLayout.setDrawerListener(mDrawerToogle);
+
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.mainmenu, menu);
+		inflater.inflate(R.menu.menu_unitlist, menu);
+
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) MenuItemCompat
+				.getActionView(searchItem);
+
+		searchView.setOnQueryTextListener(this);
+		searchView.setOnCloseListener(new OnCloseListener() {
+
+			@Override
+			public boolean onClose() {
+				unitAdapter.getFilter().filter("");
+				return true;
+			}
+		});
+
+		MenuItemCompat.setOnActionExpandListener(searchItem,
+				new OnActionExpandListener() {
+
+					@Override
+					public boolean onMenuItemActionExpand(MenuItem arg0) {
+						return true;
+					}
+
+					@Override
+					public boolean onMenuItemActionCollapse(MenuItem arg0) {
+						unitAdapter.getFilter().filter("");
+						return true;
+					}
+				});
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		mDrawerToogle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mDrawerToogle.syncState();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (mDrawerToogle.onOptionsItemSelected(item)) {
+			return true;
+		}
+
 		switch (item.getItemId()) {
-		case R.id.menu_about:
+		case R.id.action_about:
 			showAboutDialog();
 			return true;
 		default:
@@ -133,22 +255,16 @@ public class UnitsList extends ListActivity {
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = new Intent();
-		intent.setClass(this, UnitDetails.class);
-		intent.putExtra(PPSAddressBookPreferences.INTENT_EXTRA_UNIT_ID, id);
-		startActivity(intent);
-	}
-
-	@Override
 	protected void onResume() {
 		unitDataSource.open();
+		unitTypeDataSource.close();
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
 		unitDataSource.close();
+		unitTypeDataSource.close();
 		super.onPause();
 	}
 
@@ -178,8 +294,8 @@ public class UnitsList extends ListActivity {
 
 		unitCountTV.setText("COUNT: " + unitDataSource.getCountOfUnits());
 
-		builder.setTitle(R.string.menu_about)
-				.setIcon(R.drawable.ic_action_about)
+		builder.setTitle(R.string.action_about)
+				.setIcon(android.R.drawable.ic_dialog_info)
 				.setView(view)
 				.setNeutralButton(R.string.button_ok,
 						new DialogInterface.OnClickListener() {
@@ -206,6 +322,12 @@ public class UnitsList extends ListActivity {
 			this.mContext = context;
 			this.inflator = (LayoutInflater) mContext
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
+		}
+
+		public void repopulate(List<Unit> newUnits) {
+			this.units.clear();
+			this.units = newUnits;
+			UnitListAdapter.this.notifyDataSetChanged();
 		}
 
 		@Override
@@ -292,6 +414,17 @@ public class UnitsList extends ListActivity {
 			};
 		}
 
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		unitAdapter.getFilter().filter(newText);
+		return true;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		return false;
 	}
 
 }
