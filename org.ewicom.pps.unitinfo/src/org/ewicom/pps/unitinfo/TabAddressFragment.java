@@ -207,20 +207,13 @@ public class TabAddressFragment extends Fragment {
 	public void setDescription() {
 		TextView desc = (TextView) getView().findViewById(
 				R.id.text_unitdescription);
+		LinearLayout descPanel = (LinearLayout) getView().findViewById(R.id.panel_unitdescription);
 		String sDescription = unit.getDescription();
 
 		if (!sDescription.isEmpty()) {
 			desc.setText(sDescription);
 		} else {
-			LinearLayout descriptionLL = (LinearLayout) getView().findViewById(
-					R.id.panel_unitdescription);
-			TextView emptyDescription = (TextView) getActivity()
-					.getLayoutInflater().inflate(R.layout.empty_description,
-							null);
-
-			descriptionLL.removeView(desc);
-			descriptionLL.addView(emptyDescription, 0);
-
+			descPanel.setVisibility(View.GONE);
 		}
 	}
 

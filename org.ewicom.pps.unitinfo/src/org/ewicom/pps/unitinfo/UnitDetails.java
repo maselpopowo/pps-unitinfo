@@ -37,26 +37,24 @@
  **************************************************************************/
 package org.ewicom.pps.unitinfo;
 
-import java.util.List;
-import java.util.Vector;
-
-import org.ewicom.pps.unitinfo.model.PersonDataSource;
-import org.ewicom.pps.unitinfo.model.PhoneDataSource;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.ActionBarActivity;
 
-public class UnitDetails extends FragmentActivity {
+public class UnitDetails extends ActionBarActivity implements
+		ActionBar.TabListener {
 
-	private static final String TAG = "UnitDetails";
+	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+
+	private static final int ADDRESS_TAB_POSITION = 0;
+	private static final int LEADERS_TAB_POSITION = 1;
+	private static final int PHONES_TAB_POSITION = 2;
 
 	private long unitID;
-
-	SectionsPagerAdapter mSectionsPagerAdapter;
-	ViewPager mViewPager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,59 +64,70 @@ public class UnitDetails extends FragmentActivity {
 		final Intent intent = getIntent();
 		unitID = intent.getLongExtra("unit_id", -1);
 
-		Object[] fragmentData = prepareFragmentList();
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager(), (List<Fragment>) fragmentData[0],
-				(List<String>) fragmentData[1]);
+		final ActionBar actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-
+		actionBar
+				.addTab(actionBar.newTab()
+						.setIcon(R.drawable.ic_collections_labels)
+						.setTabListener(this));
+		actionBar.addTab(actionBar.newTab().setIcon(R.drawable.ic_social_group)
+				.setTabListener(this));
+		actionBar.addTab(actionBar.newTab()
+				.setIcon(R.drawable.ic_device_access_end_call)
+				.setTabListener(this));
 	}
 
-	public Object[] prepareFragmentList() {
-		Bundle bundle = new Bundle();
-		bundle.putLong("unitID", unitID);
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
+			getSupportActionBar().setSelectedNavigationItem(
+					savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+		}
+	}
 
-		List<Fragment> fragments = new Vector<Fragment>();
-		List<String> titles = new Vector<String>();
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getSupportActionBar()
+				.getSelectedNavigationIndex());
+	}
 
-		fragments.add(Fragment.instantiate(this,
-				TabAddressFragment.class.getName(), bundle));
-		titles.add(getResources().getString(R.string.addressTabTitle));
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction) {
+		Fragment fragment = null;
 
-		if (checkPersons()) {
-			fragments.add(Fragment.instantiate(this,
-					TabLeadersFragment.class.getName(), bundle));
-			titles.add(getResources().getString(R.string.leadersTabTitle));
+		switch (tab.getPosition()) {
+		case ADDRESS_TAB_POSITION:
+			fragment = new TabAddressFragment();
+			getSupportActionBar().setTitle(R.string.tab_title_address);
+			break;
+		case LEADERS_TAB_POSITION:
+			fragment = new TabLeadersFragment();
+			getSupportActionBar().setTitle(R.string.tab_title_leaders);
+			break;
+		case PHONES_TAB_POSITION:
+			fragment = new TabPhonesFragment();
+			getSupportActionBar().setTitle(R.string.tab_title_phones);
+			break;
+		default:
+			break;
 		}
 
-		if (checkPhones()) {
-			fragments.add(Fragment.instantiate(this,
-					TabPhonesFragment.class.getName(), bundle));
-			titles.add(getResources().getString(R.string.phonesTabTitle));
-		}
+		Bundle args = new Bundle();
+		args.putLong("unitID", unitID);
+		fragment.setArguments(args);
 
-		return new Object[] { fragments, titles };
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.container, fragment).commit();
 	}
 
-	public boolean checkPersons() {
-		PersonDataSource ds = new PersonDataSource(this);
-		ds.open();
-		boolean flag = ds.isPersonsAvailable(unitID);
-		ds.close();
-
-		return flag;
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction fragmentTransaction) {
 	}
 
-	public boolean checkPhones() {
-		PhoneDataSource ds = new PhoneDataSource(this);
-		ds.open();
-		boolean flag = ds.isPhonesAvailable(unitID);
-		ds.close();
-
-		return flag;
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction fragmentTransaction) {
 	}
 
 	@Override

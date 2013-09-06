@@ -45,4 +45,9 @@ public class DrawerHeader implements DrawerItem {
 		TextView name;
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
 }
