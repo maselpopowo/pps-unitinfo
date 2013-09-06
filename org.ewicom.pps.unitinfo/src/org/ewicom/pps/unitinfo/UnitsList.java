@@ -95,7 +95,7 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.drawer_unitlist);
+		setContentView(R.layout.activity_unitlist);
 
 		rootLayout = (DrawerLayout) findViewById(R.id.drawer_layout_unitlist);
 		unitlist = (ListView) findViewById(R.id.list_unitlist);
@@ -146,17 +146,23 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+
 						if (id > 0) {
 							List<Unit> units = unitDataSource
 									.getUnitsByType(id);
 							unitAdapter.repopulate(units);
 							rootLayout.closeDrawer(drawerList);
+							getSupportActionBar().setTitle(
+									"Filtr("
+											+ ldrawerAdapter.getItem(position)
+													.getName() + ")");
 						}
 
 						if (id == 0) {
 							List<Unit> units = unitDataSource.getAllUnits();
 							unitAdapter.repopulate(units);
 							rootLayout.closeDrawer(drawerList);
+							getSupportActionBar().setTitle(R.string.title_activity_unitlist);
 						}
 					}
 				});
@@ -167,12 +173,12 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 
 			@Override
 			public void onDrawerClosed(View drawerView) {
-				getActionBar().setTitle("Lista Jednostek");
+				// getActionBar().setTitle("Lista Jednostek");
 			}
 
 			@Override
 			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle("Filtr");
+				// getActionBar().setTitle("Filtr");
 			}
 
 		};
@@ -235,10 +241,10 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if(mDrawerToogle.onOptionsItemSelected(item)){
+		if (mDrawerToogle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		
+
 		switch (item.getItemId()) {
 		case R.id.action_about:
 			showAboutDialog();

@@ -9,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Helper {
 
-	private static final String TAG = "Helper";
-
 	public static final int LANDLINE_PHONE_FORMAT = 1;
 	public static final int CELL_PHONE_FORMAT = 2;
 	public static final int FAX_LANDLINE_PHONE_FORMAT = 3;

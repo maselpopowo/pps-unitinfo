@@ -51,4 +51,9 @@ public class DrawerList implements DrawerItem {
 		return this.id;
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
 }

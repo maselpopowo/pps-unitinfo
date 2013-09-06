@@ -18,11 +18,12 @@
         android:allowClearUserData="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar" >
+        android:theme="@style/Theme.AppCompat.Light" >
         <activity
-            android:name=".SplashActivity"
+            android:name="org.ewicom.pps.unitinfo.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
             <intent-filter android:label="@string/app_label" >
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,17 +31,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UnitsList"
+            android:name="org.ewicom.pps.unitinfo.UnitsList"
             android:label="@string/title_activity_unitlist"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light" >
-        </activity>
-        <activity
-            android:name=".UnitDetails"
-            android:label="@string/title_activity_unitdetails"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".MainActivity" >
+        <activity
+            android:name="org.ewicom.pps.unitinfo.UnitDetails"
+            android:label="@string/title_activity_unitdetails"
+            android:parentActivityName="org.ewicom.pps.unitinfo.UnitsList"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.ewicom.pps.unitinfo.UnitsList" />
         </activity>
     </application>
 

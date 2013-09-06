@@ -29,9 +29,11 @@
     <string name="button_cancel">Anuluj</string>
     <string name="emptyDescription">Brak skróconego opisu jednostki</string>
     <string name="fullDescriptionLink">Pełny opis</string>
-    <string name="addressTabTitle">Opis</string>
-    <string name="leadersTabTitle">Kierownictwo</string>
-    <string name="phonesTabTitle">Telefony</string>
+    
+    <string name="tab_title_address">Dane teleadresowe</string>
+    <string name="tab_title_leaders">Kierownictwo</string>
+    <string name="tab_title_phones">Ważne telefony</string>
+    
     <string name="openImageLink">Wyświetl zdjęcie</string>
     <string name="openMapLink">Wskazówki dojazdu</string>
     <string name="saveInContactLink">Zapisz w kontaktach</string>
