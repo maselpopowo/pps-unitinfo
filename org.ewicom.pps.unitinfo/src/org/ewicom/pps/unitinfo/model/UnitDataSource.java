@@ -174,7 +174,7 @@ public class UnitDataSource {
 		unit.setParentLname(cursor.getString(COLUMN_INDEX_PARENT_LNAME));
 		unit.setParentId(cursor.getLong(COLUMN_INDEX_PARENT_ID));
 		unit.setLink(cursor.getString(COLUMN_INDEX_UNIT_LINK));
-		unit.setLink(cursor.getString(COLUMN_INDEX_UNIT_TYPE_ID));
+		unit.setUnitTypeId(cursor.getLong(COLUMN_INDEX_UNIT_TYPE_ID));
 
 		return unit;
 	}
