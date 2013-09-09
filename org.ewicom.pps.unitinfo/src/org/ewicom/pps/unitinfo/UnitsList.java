@@ -173,20 +173,18 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 
 			@Override
 			public void onDrawerClosed(View drawerView) {
-				// getActionBar().setTitle("Lista Jednostek");
 			}
 
 			@Override
 			public void onDrawerOpened(View drawerView) {
-				// getActionBar().setTitle("Filtr");
 			}
 
 		};
 
 		rootLayout.setDrawerListener(mDrawerToogle);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
 
 	}
 
