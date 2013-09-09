@@ -64,6 +64,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -219,15 +220,15 @@ public class TabAddressFragment extends Fragment {
 
 	public void openUnitWebsite(View view) {
 
-		Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+		Toast noWwwToast = Toast.makeText(getActivity().getApplicationContext(),
 				R.string.no_www_app, Toast.LENGTH_LONG);
 		Intent intent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse(unit.getLink()));
-
+		
 		if (PPSAddressBook.isIntentAvailable(getActivity(), intent)) {
 			startActivity(intent);
 		} else {
-			toast.show();
+			noWwwToast.show();
 		}
 	}
 
