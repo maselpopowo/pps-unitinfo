@@ -126,22 +126,31 @@ public class TabLeadersFragment extends Fragment {
 
 				Linkify.addLinks(phoneTV, Linkify.PHONE_NUMBERS);
 				Linkify.addLinks(emailTV, Linkify.EMAIL_ADDRESSES);
-				
-				TextView saveContactLink = (TextView) getActivity().getLayoutInflater().inflate(R.layout.textview_link_savecontact, null);
-				LayoutParams linkParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
+				TextView saveContactLink = (TextView) getActivity()
+						.getLayoutInflater().inflate(
+								R.layout.textview_link_savecontact, null);
+				LayoutParams linkParam = new LayoutParams(
+						LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 				personLL.addView(saveContactLink, linkParam);
 				saveContactLink.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						Intent saveContactIntent = new Intent(Intents.Insert.ACTION);
-						saveContactIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-						
-						saveContactIntent.putExtra(Intents.Insert.NAME, person.getPerson());
-						saveContactIntent.putExtra(Intents.Insert.JOB_TITLE, person.getPosition());
-						saveContactIntent.putExtra(Intents.Insert.PHONE, person.getPhone());
-						saveContactIntent.putExtra(Intents.Insert.EMAIL, person.getEmail());
-						
+						Intent saveContactIntent = new Intent(
+								Intents.Insert.ACTION);
+						saveContactIntent
+								.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+
+						saveContactIntent.putExtra(Intents.Insert.NAME,
+								person.getPerson());
+						saveContactIntent.putExtra(Intents.Insert.JOB_TITLE,
+								person.getPosition());
+						saveContactIntent.putExtra(Intents.Insert.PHONE,
+								person.getPhone());
+						saveContactIntent.putExtra(Intents.Insert.EMAIL,
+								person.getEmail());
+
 						startActivity(saveContactIntent);
 					}
 				});

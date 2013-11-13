@@ -40,6 +40,7 @@ package org.ewicom.pps.unitinfo;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.ewicom.pps.unitinfo.PPSAddressBook.PPSAddressBookPreferences;
 import org.ewicom.pps.unitinfo.model.DrawerHeader;
@@ -48,6 +49,8 @@ import org.ewicom.pps.unitinfo.model.Unit;
 import org.ewicom.pps.unitinfo.model.UnitDataSource;
 import org.ewicom.pps.unitinfo.model.UnitType;
 import org.ewicom.pps.unitinfo.model.UnitTypeDataSource;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -162,7 +165,8 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 							List<Unit> units = unitDataSource.getAllUnits();
 							unitAdapter.repopulate(units);
 							rootLayout.closeDrawer(drawerList);
-							getSupportActionBar().setTitle(R.string.title_activity_unitlist);
+							getSupportActionBar().setTitle(
+									R.string.title_activity_unitlist);
 						}
 					}
 				});
@@ -408,6 +412,7 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 					filterResults.values = filteredUnits;
 					filterResults.count = filteredUnits.size();
 					return filterResults;
+					
 				}
 			};
 		}
@@ -425,4 +430,15 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 		return false;
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
 }
