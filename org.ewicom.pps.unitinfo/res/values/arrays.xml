@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="divider_colors">
+        <item>#CC0000</item>
+        <item>#0099CC</item>
+        <item>#FFF350</item>
+        <item>#FF8800</item>
+        <item>#669900</item>
+        <item>#A750D3</item>
+        <item>#9933CC</item>
+        <item>#B368D9</item>
+        <item>#C182E0</item>
+        <item>#A8D324</item>
+        <item>#A8D324</item>
+    </array>
+
+</resources>

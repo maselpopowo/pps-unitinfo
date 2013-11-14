@@ -39,22 +39,28 @@ package org.ewicom.pps.unitinfo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class UnitDetails extends ActionBarActivity implements
 		ActionBar.TabListener {
 
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
-	private static final int ADDRESS_TAB_POSITION = 0;
-	private static final int LEADERS_TAB_POSITION = 1;
-	private static final int PHONES_TAB_POSITION = 2;
+	public static final int ADDRESS_TAB_POSITION = 0;
+	public static final int LEADERS_TAB_POSITION = 1;
+	public static final int PHONES_TAB_POSITION = 2;
 
 	private long unitID;
+
+	UnitDetailsPageAdapter unitDetailsPageAdapter;
+	ViewPager viewPager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,26 @@ public class UnitDetails extends ActionBarActivity implements
 
 		final Intent intent = getIntent();
 		unitID = intent.getLongExtra("unit_id", -1);
+
+		unitDetailsPageAdapter = new UnitDetailsPageAdapter(
+				getSupportFragmentManager(), unitID);
+		viewPager = (ViewPager) findViewById(R.id.pager);
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageSelected(int position) {
+				getSupportActionBar().setSelectedNavigationItem(position);
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+			}
+		});
+		viewPager.setAdapter(unitDetailsPageAdapter);
 
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -95,31 +121,22 @@ public class UnitDetails extends ActionBarActivity implements
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction) {
-		Fragment fragment = null;
+		viewPager.setCurrentItem(tab.getPosition());
 
 		switch (tab.getPosition()) {
 		case ADDRESS_TAB_POSITION:
-			fragment = new TabAddressFragment();
 			getSupportActionBar().setTitle(R.string.tab_title_address);
 			break;
 		case LEADERS_TAB_POSITION:
-			fragment = new TabLeadersFragment();
 			getSupportActionBar().setTitle(R.string.tab_title_leaders);
 			break;
 		case PHONES_TAB_POSITION:
-			fragment = new TabPhonesFragment();
 			getSupportActionBar().setTitle(R.string.tab_title_phones);
 			break;
 		default:
 			break;
 		}
 
-		Bundle args = new Bundle();
-		args.putLong("unitID", unitID);
-		fragment.setArguments(args);
-
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.container, fragment).commit();
 	}
 
 	@Override
@@ -138,5 +155,17 @@ public class UnitDetails extends ActionBarActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 }
