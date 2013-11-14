@@ -4,6 +4,7 @@ import org.ewicom.pps.unitinfo.DrawerItem;
 import org.ewicom.pps.unitinfo.R;
 import org.ewicom.pps.unitinfo.LeftDrawerAdapter.RowType;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -12,10 +13,12 @@ public class DrawerList implements DrawerItem {
 
 	private final String name;
 	private final long id;
+	private final int color;
 
-	public DrawerList(LayoutInflater layoutInflater, String name, long id) {
+	public DrawerList(LayoutInflater layoutInflater, String name, long id, int color) {
 		this.name = name;
 		this.id = id;
+		this.color = color;
 	}
 
 	@Override
@@ -31,6 +34,7 @@ public class DrawerList implements DrawerItem {
 			mHolder = new Holder();
 			view = inflater.inflate(R.layout.item_drawer_list, null);
 			mHolder.name = (TextView) view.findViewById(R.id.text_drawer_list);
+			mHolder.divider = view.findViewById(R.id.text_drawel_divider);
 			view.setTag(mHolder);
 
 		} else {
@@ -38,12 +42,14 @@ public class DrawerList implements DrawerItem {
 		}
 
 		mHolder.name.setText(name);
+		mHolder.divider.setBackgroundColor(color);
 
 		return view;
 	}
 
 	private class Holder {
 		TextView name;
+		View divider;
 
 	}
 

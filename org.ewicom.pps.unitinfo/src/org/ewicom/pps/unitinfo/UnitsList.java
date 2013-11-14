@@ -40,7 +40,6 @@ package org.ewicom.pps.unitinfo;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import org.ewicom.pps.unitinfo.PPSAddressBook.PPSAddressBookPreferences;
 import org.ewicom.pps.unitinfo.model.DrawerHeader;
@@ -50,14 +49,13 @@ import org.ewicom.pps.unitinfo.model.UnitDataSource;
 import org.ewicom.pps.unitinfo.model.UnitType;
 import org.ewicom.pps.unitinfo.model.UnitTypeDataSource;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.MenuItemCompat;
@@ -79,6 +77,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class UnitsList extends ActionBarActivity implements OnQueryTextListener {
 
@@ -133,13 +133,17 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 		drawerItems.add(header);
 
 		DrawerList allUnitsItem = new DrawerList(getLayoutInflater(),
-				getString(R.string.drawer_list_allunits), 0);
+				getString(R.string.drawer_list_allunits), 0, 0);
 		drawerItems.add(allUnitsItem);
 
+		TypedArray colors = getResources().obtainTypedArray(R.array.divider_colors);
+		
 		for (UnitType t : allTypes) {
 			drawerItems.add(new DrawerList(getLayoutInflater(), t.getName(), t
-					.getId()));
+					.getId(), colors.getColor((int) t.getId() - 1, 0)));
 		}
+		
+		colors.recycle();
 
 		ldrawerAdapter = new LeftDrawerAdapter(UnitsList.this, drawerItems);
 		drawerList.setAdapter(ldrawerAdapter);
@@ -189,7 +193,6 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-
 	}
 
 	@Override
@@ -318,12 +321,16 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 		private List<Unit> fullUnitsList;
 		private Context mContext;
 		private LayoutInflater inflator;
+		
+		private TypedArray colors;
 
 		public UnitListAdapter(Context context, List<Unit> units) {
 			this.units = units;
 			this.mContext = context;
 			this.inflator = (LayoutInflater) mContext
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
+			
+			colors = getResources().obtainTypedArray(R.array.divider_colors);
 		}
 
 		public void repopulate(List<Unit> newUnits) {
@@ -358,6 +365,7 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 						.findViewById(R.id.shortUnitName);
 				mHolder.longUnitName = (TextView) v
 						.findViewById(R.id.longUnitName);
+				mHolder.typeDivider = v.findViewById(R.id.colorDivider);
 				v.setTag(mHolder);
 			} else {
 				mHolder = (MainListHolder) v.getTag();
@@ -368,12 +376,16 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 					+ units.get(position).getCity();
 			mHolder.longUnitName.setText(longName);
 
+			mHolder.typeDivider.setBackgroundColor(colors.getColor(
+					(int) units.get(position).getUnitTypeId() - 1, 0));
+
 			return v;
 		}
 
 		private class MainListHolder {
 			private TextView shortUnitName;
 			private TextView longUnitName;
+			private View typeDivider;
 		}
 
 		@Override
@@ -412,7 +424,7 @@ public class UnitsList extends ActionBarActivity implements OnQueryTextListener 
 					filterResults.values = filteredUnits;
 					filterResults.count = filteredUnits.size();
 					return filterResults;
-					
+
 				}
 			};
 		}
